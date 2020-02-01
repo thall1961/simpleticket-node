@@ -1,25 +1,17 @@
-let debug = require("debug")("simpleticket-node:server");
-let http = require("http");
-let createError = require("http-errors");
-let express = require("express");
-let path = require("path");
-let cookieParser = require("cookie-parser");
-let logger = require("morgan");
-let mongoose = require("mongoose");
+"use strict";
 
-let router = require("./routes/index");
+var debug = require("debug")("simpleticket-node:server");
+var http = require("http");
+var createError = require("http-errors");
+var express = require("express");
+var path = require("path");
+var cookieParser = require("cookie-parser");
+var logger = require("morgan");
+var sassMiddleware = require("node-sass-middleware");
 
-// import environmental variables from our variables.env file
-require("dotenv").config({ path: "variables.env" });
+var router = require("./routes/index");
 
-// Connect to our Database and handle any bad connections
-mongoose.connect(process.env.DATABASE);
-mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
-mongoose.connection.on("error", err => {
-  console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);
-});
-
-let app = express();
+var app = express();
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -42,12 +34,12 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", router);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
@@ -61,14 +53,14 @@ app.use(function(err, req, res, next) {
  * Get port from environment and store in Express.
  */
 
-let port = normalizePort(process.env.PORT || "3000");
+var port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
 
 /**
  * Create HTTP server.
  */
 
-let server = http.createServer(app);
+var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -83,7 +75,7 @@ server.on("listening", onListening);
  */
 
 function normalizePort(val) {
-  let port = parseInt(val, 10);
+  var port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe
@@ -107,7 +99,7 @@ function onError(error) {
     throw error;
   }
 
-  let bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+  var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -129,7 +121,7 @@ function onError(error) {
  */
 
 function onListening() {
-  let addr = server.address();
-  let bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+  var addr = server.address();
+  var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
   debug("Listening on " + bind);
 }
