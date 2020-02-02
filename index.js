@@ -1,25 +1,52 @@
-let debug = require("debug")("simpleticket-node:server");
-let http = require("http");
-let createError = require("http-errors");
-let express = require("express");
-let path = require("path");
-let cookieParser = require("cookie-parser");
-let logger = require("morgan");
-let mongoose = require("mongoose");
+const debug = require("debug")("simpleticket-node:server");
+const http = require("http");
+const createError = require("http-errors");
+const express = require("express");
+const graphqlHTTP = require("express-graphql");
+const { buildSchema } = require("graphql");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
+const mongoose = require("mongoose");
 
-let router = require("./routes/index");
+const router = require("./routes/index");
 
 // import environmental variables from our variables.env file
 require("dotenv").config({ path: "variables.env" });
 
 // Connect to our Database and handle any bad connections
-mongoose.connect(process.env.DATABASE);
+mongoose.connect(process.env.DATABASE, { useNewUrlParser: true });
 mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
 mongoose.connection.on("error", err => {
-  console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);
+  console.error(
+    `Something broke trying to connect to the database 👉 ${err.message}`
+  );
 });
 
-let app = express();
+const app = express();
+
+// Construct a schema, using GraphQL schema language
+const schema = buildSchema(`
+  type Query {
+    hello: String
+  }
+`);
+
+// The root provides a resolver function for each API endpoint
+const root = {
+  hello: () => {
+    return "Hello world!";
+  }
+};
+
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema: schema,
+    rootValue: root,
+    graphiql: true
+  })
+);
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -29,25 +56,18 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-// app.use(
-//   sassMiddleware({
-//     src: path.join(__dirname, "public"),
-//     dest: path.join(__dirname, "public"),
-//     indentedSyntax: true, // true = .sass and false = .scss
-//     sourceMap: true
-//   })
-// );
+
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", router);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
@@ -61,29 +81,35 @@ app.use(function(err, req, res, next) {
  * Get port from environment and store in Express.
  */
 
-let port = normalizePort(process.env.PORT || "3000");
+const port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
 
 /**
  * Create HTTP server.
  */
 
-let server = http.createServer(app);
+const server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
-server.on("error", onError);
-server.on("listening", onListening);
+server.listen(port, () => {
+  console.log(
+    `Running a GraphQL API server at http://localhost:${
+      server.address().port
+    }/graphql`
+  );
+});
+// server.on("error", onError);
+// server.on("listening", onListening);
 
 /**
  * Normalize a port into a number, string, or false.
  */
 
 function normalizePort(val) {
-  let port = parseInt(val, 10);
+  const port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe
@@ -102,34 +128,36 @@ function normalizePort(val) {
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error) {
-  if (error.syscall !== "listen") {
-    throw error;
-  }
+// function onError(error) {
+//   if (error.syscall !== "listen") {
+//     throw error;
+//   }
 
-  let bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+//   const bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
 
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case "EACCES":
-      console.error(bind + " requires elevated privileges");
-      process.exit(1);
-      break;
-    case "EADDRINUSE":
-      console.error(bind + " is already in use");
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
-}
+//   // handle specific listen errors with friendly messages
+//   switch (error.code) {
+//     case "EACCES":
+//       console.error(`${bind} requires elevated privileges`);
+//       process.exit(1);
+//       break;
+//     case "EADDRINUSE":
+//       console.error(`${bind} is already in use`);
+//       process.exit(1);
+//       break;
+//     default:
+//       throw error;
+//   }
+// }
 
 /**
  * Event listener for HTTP server "listening" event.
  */
 
-function onListening() {
-  let addr = server.address();
-  let bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
-  debug("Listening on " + bind);
-}
+// function onListening() {
+//   console.log(
+//     `Running a GraphQL API server at http://localhost:${
+//       server.address().port
+//     }/graphql`
+//   );
+// }

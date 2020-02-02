@@ -3,7 +3,7 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/dist/index.css')
+    link(rel='stylesheet', href='/dist/App.css')
     //- link(rel="shortcut icon" type="image/png" href="/images/icons/doughnut.png")
     meta(name="viewport" content="width=device-width, initial-scale=1")
   body
@@ -16,13 +16,13 @@ html
           #navbarSupportedContent.collapse.navbar-collapse
             ul.navbar-nav.ml-auto
               li.nav-item
-                a.nav-link.small(href='/events') Events
+                a.nav-link.nav-link-sm(href='/events') Events
               li.nav-item
-                a.nav-link.small(href='/settings') Settings
+                a.nav-link.nav-link-sm(href='/settings') Settings
               li.nav-item
-                a.nav-link.small(href='/logout') Logout
+                a.nav-link.nav-link-sm(href='/logout') Logout
               li.nav-item
-                a.btn.btn-primary(href='/new') New Event
+                a.btn.btn-primary.btn-sm(href='/new') New Event
 
     block messages
 
