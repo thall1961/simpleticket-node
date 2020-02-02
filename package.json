@@ -6,9 +6,10 @@
     "watch": "nodemon ./start.js --ignore public/",
     "dev": "concurrently \"npm run watch\" \"npm run assets\" --names \"💻,📦\" --prefix name",
     "assets": "webpack -w --display-max-modules 0",
-    "build": "rimraf dist/ && babel ./ --out-dir public/dist/ --ignore ./node_modules",
     "test": "jest",
-    "start": "node dist/index.js"
+    "test:watch": "jest --watch",
+    "start": "node ./index.js",
+    "purgecss": "purgecss --css ./public/dist/App.css --content views/**/*.pug --output ./public/dist/App.css"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -32,10 +33,12 @@
     "babel-loader": "^8.0.6",
     "concurrently": "^5.1.0",
     "css-loader": "^3.4.2",
+    "husky": "^4.2.1",
     "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.13.1",
     "nodemon": "^2.0.2",
     "postcss-loader": "^3.0.0",
+    "purgecss-webpack-plugin": "^2.0.5",
     "rimraf": "^3.0.1",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.1.3",
