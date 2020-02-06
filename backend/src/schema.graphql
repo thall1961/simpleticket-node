@@ -1,0 +1,22 @@
+type Query {
+  events: [Event!]!
+}
+
+type Event {
+  id: String!
+  name: String!
+}
+
+type SuccessMessage {
+  message: String
+}
+
+type Mutation {
+  createEvent(name: String!): Event!
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+}

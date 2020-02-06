@@ -1,0 +1,52 @@
+{
+  "name": "simpleticket-node",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon ./index.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "start": "node ./index.js",
+    "db:seed": "node ./seed.js"
+  },
+  "dependencies": {
+    "@apollo/react-hooks": "^3.1.3",
+    "apollo-boost": "^0.4.7",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
+    "express": "~4.16.1",
+    "express-graphql": "^0.9.0",
+    "graphql": "^14.6.0",
+    "graphql-yoga": "^1.18.3",
+    "http-errors": "~1.6.3",
+    "mongoose": "^5.8.11",
+    "mongoose-mongodb-errors": "^0.0.2",
+    "morgan": "~1.9.1",
+    "node-sass-middleware": "0.11.0",
+    "pug": "^2.0.4",
+    "slugs": "^0.1.3",
+    "stimulus": "^1.1.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "autoprefixer": "^9.7.4",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^8.0.6",
+    "concurrently": "^5.1.0",
+    "css-loader": "^3.4.2",
+    "husky": "^4.2.1",
+    "mini-css-extract-plugin": "^0.9.0",
+    "node-sass": "^4.13.1",
+    "nodemon": "^2.0.2",
+    "postcss-loader": "^3.0.0",
+    "purgecss-webpack-plugin": "^2.0.5",
+    "rimraf": "^3.0.1",
+    "sass-loader": "^8.0.2",
+    "style-loader": "^1.1.3",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  }
+}
