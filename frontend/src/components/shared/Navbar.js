@@ -27,7 +27,7 @@ let linkStyles = {
 
 function Navbar() {
   return (
-    <Nav>
+    <Nav className="mb-5">
       <Link to="/" style={linkStyles}>
         SimpleTicket
       </Link>

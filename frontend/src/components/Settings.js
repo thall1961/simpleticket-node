@@ -1,13 +1,7 @@
 import React from "react";
-import Navbar from "./shared/Navbar";
 
 function Settings() {
-  return (
-    <div className="container">
-      <Navbar />
-      <h2>Settings</h2>
-    </div>
-  );
+  return <h2 className="h5 text-uppercase">Settings</h2>;
 }
 
 export default Settings;
