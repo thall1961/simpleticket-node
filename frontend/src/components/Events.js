@@ -1,8 +1,21 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
+import { Link } from "react-router-dom";
 import gql from "graphql-tag";
 
 import Navbar from "./shared/Navbar";
+
+const linkStyles = {
+  padding: "5px 7px",
+  background: "#f66000",
+  color: "white",
+  textTransform: "uppercase",
+  fontSize: "12px",
+  fontWeight: "bolder",
+  borderRadius: "1px",
+  border: "1px solid #f66000",
+  marginTop: "2rem"
+};
 
 function Events() {
   const { loading, error, data } = useQuery(gql`
@@ -27,6 +40,9 @@ function Events() {
           ))}
         </pre>
       )}
+      <Link to="/new-event" style={linkStyles}>
+        New Event
+      </Link>
     </div>
   );
 }
